@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "glimy"
+version = "2.0-rc"
+authors = [
+  { name="Ali Hakim Taskiran", email="alihakimxyz@gmail.com" },
+]
+description = "Computational Electromagnetics Package"
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/alihakimtaskiran/Glimy-FDTD"
+"Bug Tracker" = "https://github.com/alihakimtaskiran/Glimy-FDTD/issues"

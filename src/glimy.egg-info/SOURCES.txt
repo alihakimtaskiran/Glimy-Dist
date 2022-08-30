@@ -1,0 +1,12 @@
+LICENSE
+README.md
+pyproject.toml
+src/glimy/__init__.py
+src/glimy/curved.py
+src/glimy/geo1D.py
+src/glimy/geo2D.py
+src/glimy/geo3D.py
+src/glimy.egg-info/PKG-INFO
+src/glimy.egg-info/SOURCES.txt
+src/glimy.egg-info/dependency_links.txt
+src/glimy.egg-info/top_level.txt
