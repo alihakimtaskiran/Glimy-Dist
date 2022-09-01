@@ -182,3 +182,84 @@ class Cylinder(object):
         else:
             return False
         
+
+class VRectPrism(object):
+    def __init__(self, A, B, time, layer=0, e=1, mu=1):
+        if not isinstance(A, (tuple, list, array)):
+            raise TypeError("A must be a tuple, list or array")
+
+        if not isinstance(B, (tuple, list, array)):
+            raise TypeError("B must be a tuple, list or array")
+
+        if len(A)!=3:
+            raise ValueError('A is defined in 3D')
+    
+        if len(B)!=3:
+            raise ValueError('B is defined in 3D')
+
+        for i in A:
+	        if i<0:
+		        raise ValueError("Each component of A must be >=0")
+          
+        for i in B:
+	        if i<0:
+		        raise ValueError("Each component of B must be >=0")
+        
+        if not isinstance(time, int):
+            raise TypeError("time must be an int")
+          
+        if not isinstance(layer, int):
+            raise TypeError("# of layer must be an int")
+    
+        if layer>1000:
+            raise ValueError("# of layer must be <=1000")
+
+        if not isinstance(e, (int, float)):
+            raise TypeError("e(permittivity) must be a float or int")
+        
+        if not isinstance(mu, (int, float)):
+            raise TypeError("mu(permiablity) must be a float or int")
+
+        self.__A=A
+        self.__B=B
+        self.__time=time
+        self.__layer=layer
+        self.__e=e
+        self.__mu=mu
+    
+    def __repr__(self):
+        __="3 "
+        for i in self.__A:
+            __+=str(i)+" "
+        for i in self.__B:
+            __+=str(i)+" "
+        return __+f"{self.__layer} {self.__e.real} {self.__e.imag} {self.__mu.real} {self.__mu.imag}"
+    
+    @property
+    def inf(self):
+        return self.__layer, self.__e, self.__mu
+        
+    def t(self):
+        return 3
+    
+    def isIn(self, point):
+        for i in range(3):
+            if self.__A[i]<=point[i]<=self.__B[i] or self.__B[i]<=point[i]<=self.__A[i]:
+                pass
+            else:
+                return False
+        return True
+    
+    @property  
+    def time(self):
+        return self.__time
+    
+    def __ge__(self, other):
+        return self.__layer>=other.__layer
+    
+    def __gt__(self, other):
+        return self.__layer>other.__layer
+    
+    @property
+    def loc(self):
+        return self.__A, self.__B

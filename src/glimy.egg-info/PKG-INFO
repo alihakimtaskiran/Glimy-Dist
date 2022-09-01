@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: glimy
-Version: 2.0rc0
+Version: 3.0
 Summary: Computational Electromagnetics Package
 Author-email: Ali Hakim Taskiran <alihakimxyz@gmail.com>
 License:                     GNU GENERAL PUBLIC LICENSE
@@ -681,7 +681,7 @@ License:                     GNU GENERAL PUBLIC LICENSE
 Project-URL: Homepage, https://github.com/alihakimtaskiran/Glimy-FDTD
 Project-URL: Bug Tracker, https://github.com/alihakimtaskiran/Glimy-FDTD/issues
 Classifier: Programming Language :: Python :: 3
-Classifier: License :: OSI Approved :: MIT License
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
 Classifier: Operating System :: OS Independent
 Requires-Python: >=3.8
 Description-Content-Type: text/markdown
@@ -690,17 +690,17 @@ License-File: LICENSE
 # Glimy
 ## FDTD Simulator
   The electromagnetic field.. Interacts with our reality and the reason that we continue to live. We can live beter, if we know time evolution of electromagnetic field. 
-  Moreover, Glimmy-FDTD can simulate behaviour of light near massive objects(i.e neutron stars, blackholes). It utilizes VSL Theory of **Mach-Einstein-Dicke**.
-
+  Moreover, Glimy can simulate behaviour of light near massive objects(i.e neutron stars, blackholes). It utilizes VSL Theory of **Mach-Einstein-Dicke**.
+  Glimy can simulate photonic devices with varying refractive index through time.
+<pre>
+pip install glimy
+</pre>
 ### ![Strong Gravitational Potential](examples/2-Near-Massive-Object.py)
 ![](https://github.com/alihakimtaskiran/Glimy-FDTD/raw/main/src/5.png)     ![](https://github.com/alihakimtaskiran/Glimy-FDTD/raw/main/src/6.png)
 
 ### ![Waveguide Example](examples/1-Dielectric-Wave-Guide.py):
 ![](https://github.com/alihakimtaskiran/Glimy-FDTD/raw/main/src/3.png)     ![](https://github.com/alihakimtaskiran/Glimy-FDTD/raw/main/src/4.png)
 
-
-### How to Use
-Just put the ![CEM](https://github.com/alihakimtaskiran/Glimy-FDTD/tree/main/CEM) folder under working directory. Since C++ renderer engine is under construction, you may delete them.
 
 
 ### Tree
@@ -736,12 +736,20 @@ Just put the ![CEM](https://github.com/alihakimtaskiran/Glimy-FDTD/tree/main/CEM
 | 
 |----geo1D(module)--------|
 |                         |----Line(object)----------------|
-|                                                          |---__init__(A, B, layer, e=1, mu=1)
-|                                                          |---__repr__()
-|                                                          |---inf()
-|                                                          |---t()
-|                                                          |---isIn(point)
-| 
+|                         |                                |---__init__(A, B, layer, e=1, mu=1)
+|                         |                                |---__repr__()
+|                         |                                |---inf()
+|                         |                                |---t()
+|                         |                                |---isIn(point)
+|                         |
+|                         |
+|                         |----VLine(object)----------------|
+|                                                           |---__init__(A, B, time, layer, e=1, mu=1)
+|                                                           |---__repr__()
+|                                                           |---inf()
+|                                                           |---t()
+|                                                           |---isIn(point)
+|                                                           |---loc()
 | 
 |                                                   
 |----geo2D(module)--------|
@@ -754,11 +762,20 @@ Just put the ![CEM](https://github.com/alihakimtaskiran/Glimy-FDTD/tree/main/CEM
 |                         |
 |                         |
 |                         |----Circle(object)---------------|
-|                                                           |---__init__(A,r,layer,e=1,mu=1)
-|                                                           |---__repr__()
-|                                                           |---inf()
-|                                                           |---t()
-|                                                           |---isIn(point)
+|                         |                                 |---__init__(A,r,layer,e=1,mu=1)
+|                         |                                 |---__repr__()
+|                         |                                 |---inf()
+|                         |                                 |---t()
+|                         |                                 |---isIn(point)
+|                         |
+|                         | 
+|                         |----VRectangle(object)----------------|
+|                                                                |---__init__(A, B, time, layer, e=1, mu=1)
+|                                                                |---__repr__()
+|                                                                |---inf()
+|                                                                |---t()
+|                                                                |---isIn(point)
+|                                                                |---loc()
 |
 |
 |
@@ -780,11 +797,20 @@ Just put the ![CEM](https://github.com/alihakimtaskiran/Glimy-FDTD/tree/main/CEM
                           |        
                           |
                           |----Cylinder(object)-------------|
-                                                            |---__init__(C,r,h,layer=0,e=1,mu=1)
-                                                            |---__repr__()
-                                                            |---inf()
-                                                            |---t()
-                                                            |---isIn(point)
+                          |                                 |---__init__(C,r,h,layer=0,e=1,mu=1)
+                          |                                 |---__repr__()
+                          |                                 |---inf()
+                          |                                 |---t()
+                          |                                 |---isIn(point)
+                          |
+                          |
+                          |----VRectPrism(object)----------------|
+                                                                 |---__init__(A, B, time, layer, e=1, mu=1)
+                                                                 |---__repr__()
+                                                                 |---inf()
+                                                                 |---t()
+                                                                 |---isIn(point)
+                                                                 |---loc()
   </pre>
   
   # Documentation
@@ -844,6 +870,15 @@ Just put the ![CEM](https://github.com/alihakimtaskiran/Glimy-FDTD/tree/main/CEM
   - **e** : Relative permittivity of the object. It may take float ot int. It is not restricted to be less than 1 intentionally, for researching Cherenkov Radiation, metamaterials etc.
   - **mu** : Relative permeability of the object. It may take float ot int. It is not restricted to be less than 1 intentionally.
   
+  ## geo1D.VLine(A, B, time, layer, e=1, mu=1)
+  Creates a line in 1D at given time.
+  - **A**: One of endpoints of the Line. It may take an integer. All units are # of grid cells.
+  - **B**: One of endpoints of the Line. It may take an integer. All units are # of grid cells.
+  - **layer** : Priority of the object. It is an integer and maximum can take 1000. The less **layer** value, the more prior the object. It is useful where you want to design object are overlapping like dielectric waveguides.
+  - **e** : Relative permittivity of the object. It may take float ot int. It is not restricted to be less than 1 intentionally, for researching Cherenkov Radiation, metamaterials etc.
+  - **mu** : Relative permeability of the object. It may take float ot int. It is not restricted to be less than 1 intentionally.
+  - **time** : The instance that after it refractive index of the area changes
+  
   ## geo2D.Rectangle(A, B, layer, e=1, mu=1)
   Creates a rectangle in 2D.
   - **A**: One of non-connected vertex of the Rectangle. It may take an integer. All units are # of grid cells.
@@ -859,6 +894,15 @@ Just put the ![CEM](https://github.com/alihakimtaskiran/Glimy-FDTD/tree/main/CEM
   - **layer** : Priority of the object. It is an integer and maximum can take 1000. The less **layer** value, the more prior the object. It is useful where you want to design object are overlapping like open access cavity dielectric waveguides.
   - **e** : Relative permittivity of the object. It may take float ot int. It is not restricted to be less than 1 intentionally, for researching Cherenkov Radiation, metamaterials etc.
   - **mu** : Relative permeability of the object. It may take float ot int. It is not restricted to be less than 1 intentionally.
+  
+    ## geo2D.VRectangle(A, B, time, layer, e=1, mu=1)
+  Creates a rectangle in 2D at given time.
+  - **A**: One of non-connected vertex of the Rectangle. It may take an integer. All units are # of grid cells.
+  - **B**: One of non-connected vertex of the Rectangle. It may take an integer. All units are # of grid cells.
+  - **layer** : Priority of the object. It is an integer and maximum can take 1000. The less **layer** value, the more prior the object. It is useful where you want to design object are overlapping like open access cavity dielectric waveguides.
+  - **e** : Relative permittivity of the object. It may take float ot int. It is not restricted to be less than 1 intentionally, for researching Cherenkov Radiation, metamaterials etc.
+  - **mu** : Relative permeability of the object. It may take float ot int. It is not restricted to be less than 1 intentionally.
+  - **time** : The instance that after it refractive index of the area changes
   
   ## geo3D.RectPrism(A, B, layer, e=1, mu=1)
  Creates a rectangular prism in 3D.
@@ -885,3 +929,14 @@ Just put the ![CEM](https://github.com/alihakimtaskiran/Glimy-FDTD/tree/main/CEM
   - **e** : Relative permittivity of the object. It may take float ot int. It is not restricted to be less than 1 intentionally, for researching Cherenkov Radiation, metamaterials etc.
   - **mu** : Relative permeability of the object. It may take float ot int. It is not restricted to be less than 1 intentionally.
   
+  ## geo3D.VRectPrism(A, B, time, layer, e=1, mu=1)
+ Creates a rectangular prism in 3D at given time.
+  - **A**: One of non-connected vertex of the RectPrism. It may take an integer. All units are # of grid cells.
+  - **B**: One of non-connected vertex of the RectPrism. It may take an integer. All units are # of grid cells.
+  - **layer** : Priority of the object. It is an integer and maximum can take 1000. The less **layer** value, the more prior the object. It is useful where you want to design object are overlapping like open access cavity dielectric waveguides.
+  - **e** : Relative permittivity of the object. It may take float ot int. It is not restricted to be less than 1 intentionally, for researching Cherenkov Radiation, metamaterials etc.
+  - **mu** : Relative permeability of the object. It may take float ot int. It is not restricted to be less than 1 intentionally.
+  - **time** : The instance that after it refractive index of the area changes
+  
+  
+
