@@ -1,9 +1,14 @@
+import os
 import numpy as np
 from math import pi
+from sys import platform
+import time
+
 import glimy.geo1D
 import glimy.geo2D
 import glimy.geo3D
 import glimy.curved
+
 import matplotlib.pyplot as plt
 
 
@@ -70,14 +75,14 @@ class Continuum(object):
                 if self.__dim==1 and not isinstance(arg, (geo1D.Line, geo1D.VLine)):
                     raise TypeError("In 1-D, only lines are allowed")
                 
-                elif self.__dim==2 and not isinstance(arg, (geo2D.Rectangle, geo2D.Circle, geo2D.VRectangle)):
+                elif self.__dim==2 and not isinstance(arg, (geo2D.PointCloud,geo2D.Rectangle, geo2D.Circle, geo2D.VRectangle)):
                     raise TypeError("In 2-D, only defined geometries are allowed")
                 
-                elif self.__dim==3 and not isinstance(arg, (geo3D.RectPrism, geo3D.Cylinder, geo3D.Sphere, geo3D.VRectPrism)):
+                elif self.__dim==3 and not isinstance(arg, (geo3D.PointCloud, geo3D.RectPrism, geo3D.Cylinder, geo3D.Sphere, geo3D.VRectPrism)):
                     raise TypeError("In 3-D, only defined geometries are allowed")
                 
                 else:
-                    if isinstance(arg,(geo1D.Line, geo2D.Rectangle, geo2D.Circle, geo3D.RectPrism, geo3D.Cylinder, geo3D.Sphere)):
+                    if isinstance(arg,(geo1D.Line, geo2D.PointCloud, geo2D.Rectangle, geo2D.Circle, geo3D.PointCloud, geo3D.RectPrism, geo3D.Cylinder, geo3D.Sphere)):
                         self.__geometries.append(arg)
                         self.__n_of_objects+=1
                     else:
@@ -310,27 +315,29 @@ class Continuum(object):
         
             
     def view_structure(self,bypass=True, *kwargs):
+        
+        mul=376.730313668/(self.__dim)**.5
 
         if not bypass:
             self.__pre_render()
         
         if self.__dim==1:
             plt.clf()
-            plt.plot(self.__E_mul)
+            plt.plot(1/self.__E_mul*mul)
             plt.show()
         elif self.__dim==2:
             plt.clf()
-            plt.imshow(self.__E_mul)
+            plt.imshow(1/self.__E_mul*mul)
             plt.show()
             
         elif self.__dim==3:
             plt.clf()
             if kwargs[0]==0:
-                plt.imshow(self.__E_mul[kwargs[1], :, :])   
+                plt.imshow(1/self.__E_mul[kwargs[1], :, :]*mul)   
             elif kwargs[0]==1:
-                plt.imshow(self.__E_mul[:, kwargs[1], :])
+                plt.imshow(1/self.__E_mul[:, kwargs[1], :]*mul)
             elif kwargs[0]==2:
-                plt.imshow(self.__E_mul[:, :, kwargs[1]])
+                plt.imshow(1/self.__E_mul[:, :, kwargs[1]]*mul)
             plt.show()
             
             
@@ -358,26 +365,29 @@ class Continuum(object):
             plt.show()
 
         
-    def export_for_renderer(self):
-        self.__pre_render()
+    def export_for_renderer(self, pre=False):
+        if pre:
+            self.__pre_render()
         self.__prepare_video()
         return self.__dim, self.__grid_size, self.__E, self.__H, self.__E_mul, self.__H_mul, self.__energizers, self.__video_instructions, self.__video_frames
 
-    def load_from_renderer(self, E, H):
+    def load_from_renderer(self, E, H, E_mul, H_mul):
         self.__E=E
         self.__H=H
+        self.__E_mul=E_mul
+        self.__H_mul=H_mul
         
     def export_E_field(self):
         return self.__E
 
-def Render(field, n_time_steps):
+def Render(field, n_time_steps,pre=False):
     if not isinstance(field, Continuum):
         raise TypeError("Only Continuum is rendered")
         
     if not isinstance(n_time_steps, int):
         raise TypeError("# of time steps(n_time_steps) must be an int")
         
-    params=field.export_for_renderer()
+    params=field.export_for_renderer(pre)
     
     __sqrt_1_dim=1/(params[0]**.5)
     Z=376.730313668*__sqrt_1_dim
@@ -410,7 +420,7 @@ def Render(field, n_time_steps):
                 if source[0]==0 and source[2][0]<=t<=source[2][1]:
                     E[source[1]]+=source[3]*np.sin(source[4]*t+source[5])
                     
-        field.load_from_renderer(E, H)
+        field.load_from_renderer(E, H, E_mul, H_mul)
         
     elif params[0]==2:
         for t in range(n_time_steps):
@@ -437,7 +447,7 @@ def Render(field, n_time_steps):
                 if source[0]==0 and source[2][0]<=t<=source[2][1]:
                     E[source[1]]+=source[3]*np.sin(source[4]*t+source[5])
         
-        field.load_from_renderer(E, H)
+        field.load_from_renderer(E, H, E_mul, H_mul)
         
     elif params[0]==3:
         for t in range(n_time_steps):
@@ -471,10 +481,10 @@ def Render(field, n_time_steps):
                 if source[0]==0 and source[2][0]<=t<=source[2][1]:
                     E[2][source[1]]+=source[3]*np.sin(source[4]*t+source[5])
         
-        field.load_from_renderer(E, H)
+        field.load_from_renderer(E, H, E_mul, H_mul)
 
-                    
-        
+def CppRender(field, n_time_steps,pre=False):               
+        pass
 
 class DotSource(object):
     def __init__(self, location, presence ,amplitude, frequency, phase=0):
