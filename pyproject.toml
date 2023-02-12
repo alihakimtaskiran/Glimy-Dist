@@ -4,11 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "glimy"
-version = "3.1.0"
+version = "4.0.0"
 authors = [
   { name="Ali Hakim Taskiran", email="alihakimxyz@gmail.com" },
 ]
-description = "Computational Electromagnetics Package with Dielectic, Magnetic Materials as well as Gravity"
+description = "Computational Electromagnetics Package with Dielectic, Magnetic Materials and Gravity"
 readme = "README.md"
 license = { file="LICENSE" }
 requires-python = ">=3.7"
@@ -19,5 +19,5 @@ classifiers = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/alihakimtaskiran/Glimy-FDTD"
-"Bug Tracker" = "https://github.com/alihakimtaskiran/Glimy-FDTD/issues"
+"Homepage" = "https://github.com/alihakimtaskiran/Glimy"
+"Bug Tracker" = "https://github.com/alihakimtaskiran/Glimy/issues"

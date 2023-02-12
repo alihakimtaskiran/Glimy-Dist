@@ -14,130 +14,111 @@ pip install glimy
 ### ![Waveguide Example](examples/1-Dielectric-Wave-Guide.py):
 ![](https://github.com/alihakimtaskiran/Glimy-FDTD/raw/main/src/3.png)     ![](https://github.com/alihakimtaskiran/Glimy-FDTD/raw/main/src/4.png)
 
-
-
 ### Tree
 <pre>
 |----Continuum(object)----|
-|                         |---__init__(dim,grid_size,ds)
-|                         |---set_curve(curved)
+|                         |---__init__(grid_size,ds)
 |                         |---add(arg)
-|                         |---add_energizer(arg)
-|                         |---view_structure(bypass=True,*kwargs)
-|                         |---view_field(*kwargs)
-|                         |---export_for_renderer()
-|                         |---load_from_renderer(E,H, E_mul, H_mul)
-|                         |---export_E_field()
-|
-|
-|
-|---Render(field,n_time_steps,pre=False)
-|
+|                         |---export_grid()
+|                         |---export_field()
+|                         |---build(verbose=1)
+|                         |---impose_grid(e,mu,anisotropy=(False,False))
+|                         |---view_metric(field="t",*args,colorbar=True)
+|                         |---view_structure(field="e",*args,colorbar=True)
+|                         |---view_field(field="E",*args,colorbar=True)
+|                         |---Render(time_steps,backend="numpy",observers=None)
 |
 |
 |----DotSource(object)----|
 |                         |---__init__(location,presence,amplitude,frequency,phase=0)
 |                         |---__repr__()
 |                         |---inf()
-|                         
 |
-|----curved(module)-------|
-|                         |----SingularCelestial(object)---|
-|                                                          |---__init__(location, mass)
-|                                                          |---export
 |
 | 
-|----geo1D(module)--------|
-|                         |----Line(object)----------------|
-|                         |                                |---__init__(A, B, layer, e=1, mu=1)
-|                         |                                |---__repr__()
-|                         |                                |---inf()
-|                         |                                |---t()
-|                         |                                |---isIn(point)
-|                         |
-|                         |
-|                         |----VLine(object)----------------|
-|                                                           |---__init__(A, B, time, layer, e=1, mu=1)
-|                                                           |---__repr__()
-|                                                           |---inf()
-|                                                           |---t()
-|                                                           |---isIn(point)
-|                                                           |---loc()
-| 
-|                                                   
-|----geo2D(module)--------|
-|                         |----PointCloud(object)-----------|
-|                         |                                 |---__init__(points, layer=0, e=1, mu=1)
-|                         |                                 |---inf()
-|                         |                                 |---t()
-|                         |                                 |---isIn(point)
-|                         |
-|                         |
-|                         |----Rectangle(object)------------|
-|                         |                                 |---__init__(A,B,layer,e=1,mu=1)
-|                         |                                 |---__repr__()
-|                         |                                 |---inf()
-|                         |                                 |---t()
-|                         |                                 |---isIn(point)
-|                         |
-|                         |
-|                         |----Circle(object)---------------|
-|                         |                                 |---__init__(A,r,layer,e=1,mu=1)
-|                         |                                 |---__repr__()
-|                         |                                 |---inf()
-|                         |                                 |---t()
-|                         |                                 |---isIn(point)
-|                         |
-|                         | 
-|                         |----VRectangle(object)----------------|
-|                                                                |---__init__(A, B, time, layer, e=1, mu=1)
-|                                                                |---__repr__()
-|                                                                |---inf()
-|                                                                |---t()
-|                                                                |---isIn(point)
-|                                                                |---loc()
-|
-|
-|
-|----geo3D(module)--------|
-                          |----PointCloud(object)-----------|
-                          |                                 |---__init__(points, layer=0, e=1, mu=1)
-                          |                                 |---inf()
-                          |                                 |---t()
-                          |                                 |---isIn(point)
-                          |
-                          |
-                          |----RectPrism(object)------------|
-                          |                                 |---__init__(A,B,layer=0,e=1,mu=1)
-                          |                                 |---__repr__()
-                          |                                 |---inf()
-                          |                                 |---t()
-                          |                                 |---isIn(point)
-                          |
-                          |
-                          |----Sphere(object)---------------|
-                          |                                 |---__init__(C,r,layer=0,e=1,mu=1)
-                          |                                 |---__repr__()
-                          |                                 |---inf()
-                          |                                 |---t()
-                          |                                 |---isIn(point)
-                          |        
-                          |
-                          |----Cylinder(object)-------------|
-                          |                                 |---__init__(C,r,h,layer=0,e=1,mu=1)
-                          |                                 |---__repr__()
-                          |                                 |---inf()
-                          |                                 |---t()
-                          |                                 |---isIn(point)
-                          |
-                          |
-                          |----VRectPrism(object)----------------|
-                                                                 |---__init__(A, B, time, layer, e=1, mu=1)
-                                                                 |---__repr__()
-                                                                 |---inf()
-                                                                 |---t()
-                                                                 |---isIn(point)
-                                                                 |---loc()
+|----geo(module)--------|
+                        |----SingularCelestial(object)----|
+                        |                                 |---__init__(location,mass)
+                        |                                 |---export()
+                        |                                 |---dimensionality()
+                        |                                 |---__repr__()
+                        |
+                        |
+                        |----MassiveCluster(object)-------|
+                        |                                 |---__init__(objects,volatile=False)
+                        |                                 |---add(arg)
+                        |                                 |---content()
+                        |                                 |---dimensionality()
+                        |                                 |---__repr__()
+                        |
+                        |
+                        |----PointCloud(object)-----------|
+                        |                                 |---__init__(points,layer=0,e=1,mu=1,time=None)
+                        |                                 |---isIn(point)
+                        |                                 |---ExistInInstance(time_step)
+                        |                                 |---dimensionality()
+                        |                                 |---info()
+                        |                                 |---eternity()
+                        |                                 |---fielder()
+                        |                                 |---duration()
+                        |                                 |---coverage()
+                        |                                 |---anisotropy()
+                        |                                 |---layer()
+                        |                                 |---__repr__()
+                        |
+                        |
+                        |----Rectangle(PointCloud)--------|
+                        |                                 |---__init__(A,B,layer=0,e=1,mu=1,time=None)
+                        |
+                        |
+                        |----RectPrism(PointCloud)--------|
+                        |                                 |---__init__(A,B,layer=0,e=1,mu=1,time=None)
+                        |
+                        |
+                        |----Circle(object)---------------|
+                        |                                 |---__init__(A,r,layer=0,e=1,mu=1,time=None)
+                        |                                 |---isIn(point)
+                        |                                 |---ExistInInstance(time_step)
+                        |                                 |---dimensionality()
+                        |                                 |---info()
+                        |                                 |---eternity()
+                        |                                 |---fielder()
+                        |                                 |---duration()
+                        |                                 |---coverage()
+                        |                                 |---anisotropy()
+                        |                                 |---layer()
+                        |                                 |---__repr__()
+                        |
+                        |
+                        |----Sphere(object)---------------|
+                        |                                 |---__init__(A,r,layer=0,e=1,mu=1,time=None)
+                        |                                 |---isIn(point)
+                        |                                 |---ExistInInstance(time_step)
+                        |                                 |---dimensionality()
+                        |                                 |---info()
+                        |                                 |---eternity()
+                        |                                 |---fielder()
+                        |                                 |---duration()
+                        |                                 |---coverage()
+                        |                                 |---anisotropy()
+                        |                                 |---layer()
+                        |                                 |---__repr__()
+                        |
+                        |
+                        |----Cylinder(object)-------------|
+                                                          |---__init__(A,r,h,layer=0,e=1,mu=1,time=None)
+                                                          |---isIn(point)
+                                                          |---ExistInInstance(time_step)
+                                                          |---dimensionality()
+                                                          |---info()
+                                                          |---eternity()
+                                                          |---fielder()
+                                                          |---duration()
+                                                          |---coverage()
+                                                          |---anisotropy()
+                                                          |---layer()
+                                                          |---__repr__()
+          
   </pre>
   
   # Documentation
@@ -145,38 +126,46 @@ pip install glimy
   
   ## Continuum(dim,grid_size,ds)
    Creates electromagnetic field with given dimensions and grid size. Grid spacing is introduced with ds.
-   - **dim** : Number of dimensions of the Continuum. It may take 1, 2 or 3.
-   - **grid_size** : Defines grid cell count per axis. It may take a tuple orlist. It's lenghts must be the same as # of dimensions.
-   - **ds** : Length of a edge of a grid cell. It may take a float or integer. All units are SI.
-### set_curve(curved)
-  Sets wheter Mach-Einstein-Dicke Theory of General Relativity will be used.
-  - **curved** : It may take a bool. If it is set **False**, you can add geometrical objects(geo1D.* , geo2D.* and geo3D.*) in Continuum. But, if it is set **True**, you can add Celestial objects (curved.*)
-
+   - **grid_size** : Defines grid cell count per axis. It may take a tuple or list. It's 2D or 3D.
+   - **ds** : Length of a edge of a grid cell. It may take a float or integer. **All units are SI**.
 
 ### add(arg)
-  Adds either new geometries or celestial objects into the Continuum.
-  - **arg** : In the case of ***set_curved(False)*** it may take geometry objects provided with **geo1D**, **geo2D** and **geo3D** modules or tuple or list of them. Added geometries must be compatible with the Continuum. 1D Continuum only accepts **geo1D.Line**; 2D Continuum only accepts **geo2D.Rectangle** and **geo2D.Circle**; 3D Continuum only accepts **geo3D.RectPrism**, **geo3D.Sphere** and **geo3D.Cylinder**. In the case of ***set_curved(True)*** it may take celestial objects,under the **curved** module or list or tuple of them
-### add_energizer(arg)
-  - **arg** : It may take DotSource or list or tuple of it. Location of DotSource must be in grid of Continuum
-### view_structure(bypass=True,*kwargs)
-  You may view the grid structure
-  - **bypass** : If it is True, it don't render the structure before view.
-  - <b> *kwargs </b> : If the Continuum is 1D or 2D just ignore it. If it is 3D, it takes two variable to view. first one is axis, second one slice.
-### view_field(*kwargs)
-  You may see Electric Field.
-  - <b> *kwargs </b> : If the Continuum is 1D or 2D just ignore it. If it is 3D, it takes two variable to view. first one is axis, second one slice.
-
-### export_E_field()
-  Get Electric Field array
-     
+  Adds either new geometries, celestial objects and sources into the Continuum.
+  - **arg** : It adds new objects into the grid. It can take either defined object or list/tuple of them(recursively). It can take tuple, list, set, everything in **geo**(**geo.\***) and **DotSource**. As long as dimensionality of object and Continuum is the same, it is added.
+### build(verbose=1)
+   Builds the dielectric, magnetic and geometrodynamic structure. 
+   - **verbose**: Determines whether info is displayed. If 0, nothing displayed. If 1, render time is displayed.
+### export_field()
+  Get Electric and Magnetic Field arrays. It returns a tuple (E, H).
+### export_grid()
+  Get permittivity and permeability arrays. It returns a tuple (e, mu).
+### impose_grid(e,mu,anisotropy=(False,False))
+  Embed the electromagnetic grid - generated by other sources -. It is useful for fetching electromagnetic material structure from any optimization algorithm and examining it's electromagnetic properties with **glimy**.
+  - **e**: Epsilon of each point of the grid. Shape of the array is (Nx, Ny,...) in isotropic media; (3,Nx,Ny,Nz) in anisotopic media.
+  - **mu**: Mu of each point of the grid. Shape of the array is (Nx, Ny,...) in isotropic media; (3,Nx,Ny,Nz) in anisotopic media.
+### view_structure(field="e",\*args,colorbar=True)
+  You can view the grid structure
+  - **field** : It takes "e" for permittivity array, "mu" for permeability array and "Z" for impedance of the grid.
+  - **\*args** : Only used in 3D. It used specify axis of view. Plane and and index number can be inserted. For example "z", 10 corresponds z=10 plane in the 3D array. "x","y","z" can be inserted. Also "yz", "xz", "xy" are synonym respectively.
+  - **colorbar**: If is is set to **True**, colorbar is displayed.
+### view_field(field="E",*args,colorbar=True)
+  You can get graph of Electric or Magnetic Field.
+  - **field** : It takes "E" for electric field, "H" or magnetic field.
+  - **\*args** : Only used in 3D. It used specify axis of view. Plane and and index number can be inserted. For example "z", 10 corresponds z=10 plane in the 3D array. "x","y","z" can be inserted. Also "yz", "xz", "xy" are synonym respectively.
+  - **colorbar**: If is is set to **True**, colorbar is displayed.
+view_metric(field="t",*args,colorbar=True)
+  You can view geometrodynamic curvature due to the massive objects in the grid.
+  - **field** : It takes "t" for curvatures in time. No other grids are not compatible yet.
+  - **\*args** : Only used in 3D. It used specify axis of view. Plane and and index number can be inserted. For example "z", 10 corresponds z=10 plane in the 3D array. "x","y","z" can be inserted. Also "yz", "xz", "xy" are synonym respectively.
+  - **colorbar**: If is is set to **True**, colorbar is displayed.
+### Render(time_steps,backend="numpy",observers=None)
+   Executes FDTD calculations on a Continuum object.
+   - **time_steps** : It is number of time steps that field will evolve. It may take an integer. Lenght of time steps is given by ds/c/(<span>&#8730;</span>dim) ; where ds is grid spacing, c is speed of light and dim is number of dimensions of the grid. All units are SI.
+   - **backend** : It sets the backend. Only **numpy** is supported recently. Therefore it is always **numpy**
+   - **observers** : Determines whether time dependent logging will be the case. If it is set to <code>None</code>, time dependent observation is not the case. However, it is a tuple or list of points e.g <code>[ (0,0), (2,2) ]</code> then it returns E-field amplitude of each given point. Returned array's order is the same as implicit order of the fed list/tuple.
 <hr/> 
 
-  ## Render(field,n_time_steps,pre=False)
-   Executes FDTD calculations on a Continuum object.
-   - **field** : It must take Continuum object. It s the field that evolved through time.
-   - **n_time_steps** : It is number of time steps that field will evolve. It may take an integer. Lenght of time steps is given by ds/c/(<span>&#8730;</span>dim) ; where ds is grid spacing, c is speed of light and dim is number of dimensions of the grid. All units are SI.
-   - **pre** : It is a boolean. <code>False</code> : Rendering will refresh E-field and H-Field. <code>True</code> : Rendering will continue from last rendered state.
-  
+
   ## DotSource(location,presence,amplitude,frequency,phase=0)
    Creates a point source on a given place on grid, through given time interval with given amplitude, frequency and phase.
    - **location** : It is location of dot source. It may take a list or tuple. 
@@ -185,101 +174,70 @@ pip install glimy
    - **frequency** : Frequency of the wave. It may take int or float.
    - **phase** : Phase of the wave. It may take int or float. It is default 0.
   
-  ## curved.SingularCelestial(location, mass):
+  ## geo.SingularCelestial(location, mass):
    Creates a point mass.
-   - **location** : Sets the location of point mass. Unit is unit length of the grid of th added Continuum It may take tuple, list or np.array. It must bu in form of N-tuple. It may be outside of the grid.
-   - **mass** : Stest the mass of the object. Unit is kg. It may take float ot int. 
-  
-  ## geo1D.Line(A, B, layer, e=1, mu=1)
-  Creates a line in 1D.
-  - **A**: One of endpoints of the Line. It may take an integer. All units are # of grid cells.
-  - **B**: One of endpoints of the Line. It may take an integer. All units are # of grid cells.
-  - **layer** : Priority of the object. It is an integer and maximum can take 1000. The less **layer** value, the more prior the object. It is useful where you want to design object are overlapping like dielectric waveguides.
-  - **e** : Relative permittivity of the object. It may take float ot int. It is not restricted to be less than 1 intentionally, for researching Cherenkov Radiation, metamaterials etc.
-  - **mu** : Relative permeability of the object. It may take float ot int. It is not restricted to be less than 1 intentionally.
-  
-  ## geo1D.VLine(A, B, time, layer, e=1, mu=1)
-  Creates a line in 1D at given time.
-  - **A**: One of endpoints of the Line. It may take an integer. All units are # of grid cells.
-  - **B**: One of endpoints of the Line. It may take an integer. All units are # of grid cells.
-  - **layer** : Priority of the object. It is an integer and maximum can take 1000. The less **layer** value, the more prior the object. It is useful where you want to design object are overlapping like dielectric waveguides.
-  - **e** : Relative permittivity of the object. It may take float ot int. It is not restricted to be less than 1 intentionally, for researching Cherenkov Radiation, metamaterials etc.
-  - **mu** : Relative permeability of the object. It may take float ot int. It is not restricted to be less than 1 intentionally.
-  - **time** : The instance that after it refractive index of the area changes
-  
-  ## geo2D.PointCloud(points, layer=0, e=1, mu=1)
-  Creates a point cloud object in 2D. It infills inside the points. It is compatible with convex hull. Draw miscallenious objects(i.e. hexagon,star, hearth) with it. 
-  - **points** : Points that defines convex full. It is a list, tuple or array of 2D points. Coordinates indicates # of cell in the grid. Like [(1,2), (2,3), (3,4)]. I needs at least 3 points. 
-  - **layer** : Priority of the object. It is an integer and maximum can take 1000. The less **layer** value, the more prior the object. It is useful where you want to design object are overlapping like open access cavity dielectric waveguides.
-  - **e** : Relative permittivity of the object. It may take float ot int. It is not restricted to be less than 1 intentionally, for researching Cherenkov Radiation, metamaterials etc.
-  - **mu** : Relative permeability of the object. It may take float ot int. It is not restricted to be less than 1 intentionally.
+   - **location** : Sets the location of point mass. Unit is **meters**. It may take tuple, list or np.array. It must bu in form of N-tuple. It may be outside of the grid.
+   - **mass** : Stest the mass of the object. Unit is **kg**. It may take float ot int.
+  ## geo.MassiveCluster(objects,volatile=False)
+  Creates cluster of massive objects. It is used to integrate so many heavy objects.
+   - **objects** : **geo.Singular** object or tuple/list/set of them
+   - **volatile** : If it is set <code>False</code>, any new object can't be added. If it is <code>True</code>, new objects can be added.
+  ### add(arg)
+  Adds a new **geo.Singular** object or tuple/list/set of them. If MassiveCluster is volatile, anything can't be added.
+  - **arg** : **geo.Singular** object or tuple/list/set of them.
+ 
+  ## geo.PointCloud(points,layer=0,e=1,mu=1,time=None)
+  Creates a point cloud object in 2D or 3D. It infills inside the points. It is compatible with convex hull. Draw miscallenious objects(i.e. hexagon,star, hearth) with it. 
+  - **points** : Points that defines convex full. It is a list, tuple or array of 2D or 3D points. Coordinates indicates # of cell in the grid. Like [(1,2), (2,3), (3,4)]. I needs at least 3 points in 2D, 4 points in 3D. 
+  - **layer** : Priority of the object. It is an integer. The less **layer** value, the more prior the object. It is useful where you want to design object are overlapping like open access cavity dielectric waveguides.
+  - **e** : Relative permittivity of the object. It may take float ot int for isotropic materials, 3×3 array/list/tuple for anisotropic materials. It is not restricted to be less than 1 intentionally, for researching Cherenkov Radiation, metamaterials etc.
+  - **mu** : Relative permeability of the object. It may take float ot int for isotropic materials, 3×3 array/list/tuple for anisotropic materials. It is not restricted to be less than 1 intentionally.
+  - **time** : It determines in which time the object is seen and dissappear. If the object is eternal, <code>time=None</code>; otherwise <code>time=(start, stop)</code>, it is a list/tuple of start and stop durations
   
   
-  ## geo2D.Rectangle(A, B, layer, e=1, mu=1)
+  ## geo.Rectangle(A, B, layer, e=1, mu=1, time)
   Creates a rectangle in 2D.
   - **A**: One of non-connected vertex of the Rectangle. It may take an integer. All units are # of grid cells.
   - **B**: One of non-connected vertex of the Rectangle. It may take an integer. All units are # of grid cells.
   - **layer** : Priority of the object. It is an integer and maximum can take 1000. The less **layer** value, the more prior the object. It is useful where you want to design object are overlapping like open access cavity dielectric waveguides.
-  - **e** : Relative permittivity of the object. It may take float ot int. It is not restricted to be less than 1 intentionally, for researching Cherenkov Radiation, metamaterials etc.
-  - **mu** : Relative permeability of the object. It may take float ot int. It is not restricted to be less than 1 intentionally.
+  - **e** : Relative permittivity of the object. It may take float ot int for isotropic materials, 3×3 array/list/tuple for anisotropic materials. It is not restricted to be less than 1 intentionally, for researching Cherenkov Radiation, metamaterials etc.
+  - **mu** : Relative permeability of the object. It may take float ot int for isotropic materials, 3×3 array/list/tuple for anisotropic materials. It is not restricted to be less than 1 intentionally.
+  - **time** : It determines in which time the object is seen and dissappear. If the object is eternal, <code>time=None</code>; otherwise <code>time=(start, stop)</code>, it is a list/tuple of start and stop durations
   
-  ## geo2D.Circle(A,r,layer,e=1,mu=1)
+  ## geo.Circle(A,r,layer,e=1,mu=1, time)
   Creates a circle in 2D.
   - **A** : Coordinates of center of the Circle. It may take a tuple or list. All units are # of grid cells.
   - **r** : Radius of the circle. It may take an integer. All units are # of grid cells.
   - **layer** : Priority of the object. It is an integer and maximum can take 1000. The less **layer** value, the more prior the object. It is useful where you want to design object are overlapping like open access cavity dielectric waveguides.
-  - **e** : Relative permittivity of the object. It may take float ot int. It is not restricted to be less than 1 intentionally, for researching Cherenkov Radiation, metamaterials etc.
-  - **mu** : Relative permeability of the object. It may take float ot int. It is not restricted to be less than 1 intentionally.
-  
-    ## geo2D.VRectangle(A, B, time, layer, e=1, mu=1)
-  Creates a rectangle in 2D at given time.
-  - **A**: One of non-connected vertex of the Rectangle. It may take an integer. All units are # of grid cells.
-  - **B**: One of non-connected vertex of the Rectangle. It may take an integer. All units are # of grid cells.
-  - **layer** : Priority of the object. It is an integer and maximum can take 1000. The less **layer** value, the more prior the object. It is useful where you want to design object are overlapping like open access cavity dielectric waveguides.
-  - **e** : Relative permittivity of the object. It may take float ot int. It is not restricted to be less than 1 intentionally, for researching Cherenkov Radiation, metamaterials etc.
-  - **mu** : Relative permeability of the object. It may take float ot int. It is not restricted to be less than 1 intentionally.
-  - **time** : The instance that after it refractive index of the area changes
-  
-    ## geo3D.PointCloud(points, layer=0, e=1, mu=1)
-  Creates a point cloud object in 3D. It infills inside the points. It is compatible with convex hull. Draw miscallenious objects(i.e. pyramid,star, hearth) with it. 
-  - **points** : Points that defines convex full. It is a list, tuple or array of 3D points. Coordinates indicates # of cell in the grid. Like [(1,2,0), (0,2,3), (0,3,4)]. I needs at least 3 points. 
-  - **layer** : Priority of the object. It is an integer and maximum can take 1000. The less **layer** value, the more prior the object. It is useful where you want to design object are overlapping like open access cavity dielectric waveguides.
-  - **e** : Relative permittivity of the object. It may take float ot int. It is not restricted to be less than 1 intentionally, for researching Cherenkov Radiation, metamaterials etc.
-  - **mu** : Relative permeability of the object. It may take float ot int. It is not restricted to be less than 1 intentionally.
-  
-  ## geo3D.RectPrism(A, B, layer, e=1, mu=1)
+   - **e** : Relative permittivity of the object. It may take float ot int for isotropic materials, 3×3 array/list/tuple for anisotropic materials. It is not restricted to be less than 1 intentionally, for researching Cherenkov Radiation, metamaterials etc.
+  - **mu** : Relative permeability of the object. It may take float ot int for isotropic materials, 3×3 array/list/tuple for anisotropic materials. It is not restricted to be less than 1 intentionally.
+  - **time** : It determines in which time the object is seen and dissappear. If the object is eternal, <code>time=None</code>; otherwise <code>time=(start, stop)</code>, it is a list/tuple of start and stop durations
+
+  ## geo.RectPrism(A, B, layer, e=1, mu=1, time)
  Creates a rectangular prism in 3D.
   - **A**: One of non-connected vertex of the RectPrism. It may take an integer. All units are # of grid cells.
   - **B**: One of non-connected vertex of the RectPrism. It may take an integer. All units are # of grid cells.
   - **layer** : Priority of the object. It is an integer and maximum can take 1000. The less **layer** value, the more prior the object. It is useful where you want to design object are overlapping like open access cavity dielectric waveguides.
-  - **e** : Relative permittivity of the object. It may take float ot int. It is not restricted to be less than 1 intentionally, for researching Cherenkov Radiation, metamaterials etc.
-  - **mu** : Relative permeability of the object. It may take float ot int. It is not restricted to be less than 1 intentionally.
+  - **e** : Relative permittivity of the object. It may take float ot int for isotropic materials, 3×3 array/list/tuple for anisotropic materials. It is not restricted to be less than 1 intentionally, for researching Cherenkov Radiation, metamaterials etc.
+  - **mu** : Relative permeability of the object. It may take float ot int for isotropic materials, 3×3 array/list/tuple for anisotropic materials. It is not restricted to be less than 1 intentionally.
+  - **time** : It determines in which time the object is seen and dissappear. If the object is eternal, <code>time=None</code>; otherwise <code>time=(start, stop)</code>, it is a list/tuple of start and stop durations
   
-  ## geo3D.Sphere(C,r,layer=0,e=1,mu=1)
+  ## geo.Sphere(C,r,layer=0,e=1,mu=1)
   Creates a sphere in 3D.
   - **C** : Coordinates of center of the Sphere. It may take a tuple or list. All units are # of grid cells.
   - **r** : Radius of the sphere. It may take an integer. All units are # of grid cells.
   - **layer** : Priority of the object. It is an integer and maximum can take 1000. The less **layer** value, the more prior the object. It is useful where you want to design object are overlapping like open access cavity dielectric waveguides.
-  - **e** : Relative permittivity of the object. It may take float ot int. It is not restricted to be less than 1 intentionally, for researching Cherenkov Radiation, metamaterials etc.
-  - **mu** : Relative permeability of the object. It may take float ot int. It is not restricted to be less than 1 intentionally.
+  - **e** : Relative permittivity of the object. It may take float ot int for isotropic materials, 3×3 array/list/tuple for anisotropic materials. It is not restricted to be less than 1 intentionally, for researching Cherenkov Radiation, metamaterials etc.
+  - **mu** : Relative permeability of the object. It may take float ot int for isotropic materials, 3×3 array/list/tuple for anisotropic materials. It is not restricted to be less than 1 intentionally.
+  - **time** : It determines in which time the object is seen and dissappear. If the object is eternal, <code>time=None</code>; otherwise <code>time=(start, stop)</code>, it is a list/tuple of start and stop durations
   
-  ## geo3D.Cylinder(C,r,h,layer=0,e=1,mu=1)
+  ## geo.Cylinder(C,r,h,layer=0,e=1,mu=1, time)
  Creates a cylinder in 3D. Its planes are **parallel to xy-plane**
   - **C** : Coordinates of center of the Cylinder. It may take a tuple or list. All units are # of grid cells. Height signifies elongation though z axis.
   - **r** : Radius of the Cylinder. It may take an integer. All units are # of grid cells.
   - **h** : Height of the Cylinder. It may take an integer. All units are # of grid cells.
   - **layer** : Priority of the object. It is an integer and maximum can take 1000. The less **layer** value, the more prior the object. It is useful where you want to design object are overlapping like open access cavity dielectric waveguides.
-  - **e** : Relative permittivity of the object. It may take float ot int. It is not restricted to be less than 1 intentionally, for researching Cherenkov Radiation, metamaterials etc.
-  - **mu** : Relative permeability of the object. It may take float ot int. It is not restricted to be less than 1 intentionally.
-  
-  ## geo3D.VRectPrism(A, B, time, layer, e=1, mu=1)
- Creates a rectangular prism in 3D at given time.
-  - **A**: One of non-connected vertex of the RectPrism. It may take an integer. All units are # of grid cells.
-  - **B**: One of non-connected vertex of the RectPrism. It may take an integer. All units are # of grid cells.
-  - **layer** : Priority of the object. It is an integer and maximum can take 1000. The less **layer** value, the more prior the object. It is useful where you want to design object are overlapping like open access cavity dielectric waveguides.
-  - **e** : Relative permittivity of the object. It may take float ot int. It is not restricted to be less than 1 intentionally, for researching Cherenkov Radiation, metamaterials etc.
-  - **mu** : Relative permeability of the object. It may take float ot int. It is not restricted to be less than 1 intentionally.
-  - **time** : The instance that after it refractive index of the area changes
-  
-  
+  - **e** : Relative permittivity of the object. It may take float ot int for isotropic materials, 3×3 array/list/tuple for anisotropic materials. It is not restricted to be less than 1 intentionally, for researching Cherenkov Radiation, metamaterials etc.
+  - **mu** : Relative permeability of the object. It may take float ot int for isotropic materials, 3×3 array/list/tuple for anisotropic materials. It is not restricted to be less than 1 intentionally.
+  - **time** : It determines in which time the object is seen and dissappear. If the object is eternal, <code>time=None</code>; otherwise <code>time=(start, stop)</code>, it is a list/tuple of start and stop durations.
 
